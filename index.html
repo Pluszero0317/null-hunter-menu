@@ -161,6 +161,7 @@
 
   <div class="player" id="player" role="dialog" aria-modal="true" aria-labelledby="playerTitle">
     <div class="top">
+      <button class="btn" id="backBtn" type="button" aria-label="返回上一步">← 返回</button>
       <div class="title" id="playerTitle">NULL HUNTER</div>
       <button class="btn" id="fullBtn" type="button">全螢幕</button>
       <button class="btn primary" id="closeBtn" type="button">返回選單</button>
@@ -347,7 +348,7 @@
         showScene(0);
         hint.textContent = "← → 切換場景，Esc 回到選單。";
       }
-      player.classList.add("open");
+      openPlayer();
       return;
     }
     galleryIndex = -1;
@@ -361,7 +362,7 @@
     frame.innerHTML = what === "video"
       ? `<video src="${g.video}" controls autoplay playsinline></video>`
       : `<iframe src="${g.web}" title="${g.name} 網頁版" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>`;
-    player.classList.add("open");
+    openPlayer();
     const f = frame.firstElementChild; setTimeout(() => f && f.focus(), 300);
   }
 
@@ -402,7 +403,20 @@
     if (btn) act(i, btn.dataset.act, btn);
   }
 
+  // 返回上一步：開啟畫面時記一筆瀏覽紀錄，瀏覽器／手機的返回鍵會先關掉畫面，而不是離開網站
+  function openPlayer() {
+    if (!player.classList.contains("open")) {
+      player.classList.add("open");
+      try { history.pushState({ nhPlayer: true }, ""); } catch (e) {}
+    }
+  }
   function close() {
+    if (history.state && history.state.nhPlayer) { history.back(); return; } // 由 popstate 收尾
+    closeNow();
+  }
+  window.addEventListener("popstate", () => { if (player.classList.contains("open")) closeNow(); });
+
+  function closeNow() {
     frame.innerHTML = "";
     galleryIndex = -1;
     player.classList.remove("open");
@@ -412,6 +426,7 @@
   }
 
   document.getElementById("closeBtn").addEventListener("click", close);
+  document.getElementById("backBtn").addEventListener("click", close);
   document.getElementById("fullBtn").addEventListener("click", () => {
     const f = frame.firstElementChild; if (f && f.requestFullscreen) f.requestFullscreen();
   });
