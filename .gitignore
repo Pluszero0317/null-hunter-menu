@@ -1,5 +1,4 @@
-# Windows 版壓縮檔與錄影太大，改放 GitHub Releases
-downloads/*.zip
+# 錄影檔通常很大，改放 GitHub Releases 或 YouTube
 videos/*.mp4
 videos/*.webm
 Thumbs.db
