@@ -108,7 +108,7 @@
   .music[aria-pressed="false"] { --accent: var(--muted); color: var(--muted); }
 
   /* 遊戲畫面 */
-  .player { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column; background: var(--navy); }
+  .player { --accent: var(--cyan); position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column; background: var(--navy); }
   .player.open { display: flex; }
   .player .top { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 3px solid var(--line); }
   .player .title { font-family: "NH Title", sans-serif; font-size: 22px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
