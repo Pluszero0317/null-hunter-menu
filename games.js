@@ -2,7 +2,8 @@
 // web：網頁版的 index.html 路徑（沒有網頁版就寫 null）
 // download：Windows 版壓縮檔路徑（還沒有就寫 null）
 // downloadParts：壓縮檔超過 100MB 時，拆開後的各份路徑（下載時自動接回）
-// video：實機錄影路徑（沒有就寫 null）
+// video：影片路徑（沒有就寫 null）；點卡片上的遊戲畫面也會播放
+// videoLabel：影片按鈕的文字（不寫就是「實機錄影」）
 // screenshot：遊戲截圖路徑（還沒有就寫 null，先用素材包的預覽圖）
 // stats：實戰數據，還沒有就寫 null，畫面會顯示「—」
 window.NULL_HUNTER_GAMES = [
@@ -31,7 +32,8 @@ window.NULL_HUNTER_GAMES = [
     color: "#FF4FA3",
     web: "games/unity/index.html",
     download: "downloads/NullHunter_Unity_Windows.zip",
-    video: null,
+    video: "videos/NullHunter_Highlight.mp4",
+    videoLabel: "精華影片",
     screenshot: null,
     note: "實戰版：M1–M7 全部完成。頭目戰 FPS 被 165Hz 螢幕的垂直同步鎖住（1% low 164.8）。",
     stats: { modules: 7, firstPass: 23, exeSize: 195, fps: 165 }

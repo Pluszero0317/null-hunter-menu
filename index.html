@@ -76,6 +76,10 @@
   .card .shot .chip { position: absolute; left: 8px; top: 8px; font-family: "NH Han Body", sans-serif; font-size: 12px; padding: 3px 8px; background: var(--navy); border: 2px solid var(--accent); color: var(--cream); }
   .card .shot .sel { position: absolute; right: 8px; bottom: 6px; font-family: "NH HUD", sans-serif; font-size: 14px; color: var(--accent); opacity: 0; }
   .card.selected .shot .sel { opacity: 1; }
+  .card .shot[data-act] { cursor: pointer; }
+  .card .shot .watch { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); font-family: "NH HUD", "NH Han Display", sans-serif; font-size: 16px; padding: 8px 14px; background: rgba(16, 20, 43, .85); border: 2px solid var(--accent); color: var(--cream); white-space: nowrap; opacity: 0; transition: opacity .15s; pointer-events: none; }
+  .card .shot[data-act][aria-disabled="false"]:hover .watch, .card .shot[data-act][aria-disabled="false"]:focus-visible .watch { opacity: 1; }
+  @media (hover: none) { .card .shot[data-act][aria-disabled="false"] .watch { opacity: 1; } }
 
   .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 12px 16px 0; border: 2px solid var(--line); }
   .stat { padding: 8px 4px; text-align: center; border-right: 2px solid var(--line); }
@@ -234,8 +238,9 @@
         <div class="bar"></div>
         <div class="head"><div class="engine">${g.name}</div><div class="ver">v${g.version}</div></div>
         <div class="meta">主操 ${g.lead}｜${g.language}</div>
-        <div class="shot" style="background-image:url('${shotOf(g, i)}')">
+        <div class="shot" style="background-image:url('${shotOf(g, i)}')" ${g.video ? `data-act="video" aria-disabled="true" title="點擊看${g.videoLabel || "實機錄影"}"` : ""}>
           <span class="chip" data-chip>確認中…</span><span class="sel">▶ SELECT</span>
+          ${g.video ? `<span class="watch">▶ 點擊看${g.videoLabel || "影片"}</span>` : ""}
         </div>
         <div class="stats">
           <div class="stat"><div class="v">${g.stats.modules == null ? "—" : g.stats.modules + "/7"}</div><div class="k">通過模組</div></div>
@@ -246,7 +251,7 @@
         ${g.note ? `<p class="note">${g.note}</p>` : ""}
         <div class="actions">
           ${g.web !== null ? `<a class="btn primary" data-act="play" aria-disabled="true">▶ 網頁試玩</a>` : ""}
-          ${g.video ? `<a class="btn ${g.web === null ? "primary" : ""}" data-act="video" aria-disabled="true">▶ 實機錄影</a>` : ""}
+          ${g.video ? `<a class="btn ${g.web === null ? "primary" : ""}" data-act="video" aria-disabled="true">▶ ${g.videoLabel || "實機錄影"}</a>` : ""}
           ${g.download ? `<a class="btn" data-act="download" aria-disabled="true" href="${g.download}" download>⇩ Windows 版</a>` : ""}
         </div>`;
       card.addEventListener("click", (e) => {
@@ -313,7 +318,7 @@
 
   async function check(card, g) {
     const [web, dl, vid] = await Promise.all([exists(g.web), exists(g.downloadParts ? g.downloadParts[0] : g.download), exists(g.video)]);
-    const set = (act, ok) => { const b = card.querySelector(`[data-act="${act}"]`); if (b) b.setAttribute("aria-disabled", ok ? "false" : "true"); };
+    const set = (act, ok) => card.querySelectorAll(`[data-act="${act}"]`).forEach(b => b.setAttribute("aria-disabled", ok ? "false" : "true"));
     set("play", web); set("download", dl); set("video", vid);
     const chip = card.querySelector("[data-chip]");
     if (isFile) chip.textContent = "請用啟動選單.bat 開啟";
@@ -352,7 +357,7 @@
       if (g.downloadParts) { joinDownload(g, btn); return; }
       const a = document.createElement("a"); a.href = g.download; a.download = ""; a.click(); return;
     }
-    document.getElementById("playerTitle").textContent = "NULL HUNTER｜" + g.name + (what === "video" ? " 實機錄影" : " 網頁版");
+    document.getElementById("playerTitle").textContent = "NULL HUNTER｜" + g.name + (what === "video" ? " " + (g.videoLabel || "實機錄影") : " 網頁版");
     frame.innerHTML = what === "video"
       ? `<video src="${g.video}" controls autoplay playsinline></video>`
       : `<iframe src="${g.web}" title="${g.name} 網頁版" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>`;
