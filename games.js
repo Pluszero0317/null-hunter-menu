@@ -1,6 +1,7 @@
 // 選單內容設定：實戰後只要改這個檔案，不用動 index.html。
 // web：網頁版的 index.html 路徑（沒有網頁版就寫 null）
 // download：Windows 版壓縮檔路徑（還沒有就寫 null）
+// downloadParts：壓縮檔超過 100MB 時，拆開後的各份路徑（下載時自動接回）
 // video：實機錄影路徑（沒有就寫 null）
 // screenshot：遊戲截圖路徑（還沒有就寫 null，先用素材包的預覽圖）
 // stats：實戰數據，還沒有就寫 null，畫面會顯示「—」
@@ -32,8 +33,8 @@ window.NULL_HUNTER_GAMES = [
     download: "downloads/NullHunter_Unity_Windows.zip",
     video: null,
     screenshot: null,
-    note: "目前是 11/15 預演版：執行檔與 FPS 為預演量測（FPS 被 165Hz 螢幕的垂直同步鎖住），通過模組與首次成功率等 11/29 正式實戰後再填。",
-    stats: { modules: null, firstPass: null, exeSize: 195, fps: 165 }
+    note: "實戰版：M1–M7 全部完成。頭目戰 FPS 被 165Hz 螢幕的垂直同步鎖住（1% low 164.8）。",
+    stats: { modules: 7, firstPass: 23, exeSize: 195, fps: 165 }
   },
   {
     id: "unreal",
@@ -45,6 +46,8 @@ window.NULL_HUNTER_GAMES = [
     color: "#2D8CFF",
     web: null,
     download: "downloads/NullHunter_Unreal_Windows.zip",
+    // 超過 GitHub 單檔 100MB，拆成 4 份放上去，下載時在瀏覽器裡接回一個 zip
+    downloadParts: [0, 1, 2, 3].map(n => "downloads/unreal/NullHunter_Unreal_Windows.zip.part" + n),
     video: "videos/NullHunter_Unreal.mp4",
     screenshot: null,
     note: "Unreal 5 沒有官方網頁版，請下載 Windows 版或看實機錄影。",

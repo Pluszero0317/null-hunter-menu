@@ -216,6 +216,7 @@
 
   async function exists(path) {
     if (!path || isFile) return false;
+    if (/^https?:\/\//.test(path)) return true; // 外部網址（GitHub Releases）無法跨網域檢查，直接視為可用
     try { const r = await fetch(path, { method: "HEAD", cache: "no-store" }); return r.ok; }
     catch (e) { return false; }
   }
@@ -237,7 +238,7 @@
           <span class="chip" data-chip>確認中…</span><span class="sel">▶ SELECT</span>
         </div>
         <div class="stats">
-          <div class="stat"><div class="v">${g.stats.modules == null ? "—" : g.stats.modules + "/6"}</div><div class="k">通過模組</div></div>
+          <div class="stat"><div class="v">${g.stats.modules == null ? "—" : g.stats.modules + "/7"}</div><div class="k">通過模組</div></div>
           <div class="stat"><div class="v">${fmt(g.stats.firstPass, "%")}</div><div class="k">首次成功</div></div>
           <div class="stat"><div class="v">${fmt(g.stats.exeSize, "MB")}</div><div class="k">執行檔</div></div>
           <div class="stat"><div class="v">${fmt(g.stats.fps)}</div><div class="k">頭目戰 FPS</div></div>
@@ -311,7 +312,7 @@
   }
 
   async function check(card, g) {
-    const [web, dl, vid] = await Promise.all([exists(g.web), exists(g.download), exists(g.video)]);
+    const [web, dl, vid] = await Promise.all([exists(g.web), exists(g.downloadParts ? g.downloadParts[0] : g.download), exists(g.video)]);
     const set = (act, ok) => { const b = card.querySelector(`[data-act="${act}"]`); if (b) b.setAttribute("aria-disabled", ok ? "false" : "true"); };
     set("play", web); set("download", dl); set("video", vid);
     const chip = card.querySelector("[data-chip]");
@@ -347,13 +348,47 @@
     galleryIndex = -1;
     hint.textContent = GAME_HINT;
     const g = games[i];
-    if (what === "download") { const a = document.createElement("a"); a.href = g.download; a.download = ""; a.click(); return; }
+    if (what === "download") {
+      if (g.downloadParts) { joinDownload(g, btn); return; }
+      const a = document.createElement("a"); a.href = g.download; a.download = ""; a.click(); return;
+    }
     document.getElementById("playerTitle").textContent = "NULL HUNTER｜" + g.name + (what === "video" ? " 實機錄影" : " 網頁版");
     frame.innerHTML = what === "video"
       ? `<video src="${g.video}" controls autoplay playsinline></video>`
       : `<iframe src="${g.web}" title="${g.name} 網頁版" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>`;
     player.classList.add("open");
     const f = frame.firstElementChild; setTimeout(() => f && f.focus(), 300);
+  }
+
+  // 分段下載：依序抓每一份、顯示進度，接成一個 zip 交給瀏覽器存檔
+  let joining = false;
+  async function joinDownload(g, btn) {
+    if (joining) return;
+    joining = true;
+    const label = btn.innerHTML;
+    const name = g.download.split("/").pop();
+    try {
+      const sizes = await Promise.all(g.downloadParts.map(p => fetch(p, { method: "HEAD" }).then(r => Number(r.headers.get("content-length")) || 0)));
+      const total = sizes.reduce((a, b) => a + b, 0);
+      const chunks = []; let got = 0;
+      for (const p of g.downloadParts) {
+        const r = await fetch(p);
+        if (!r.ok) throw new Error(p);
+        const reader = r.body.getReader();
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value); got += value.length;
+          btn.textContent = "⇩ 下載中 " + (total ? Math.floor(got / total * 100) : 0) + "%";
+        }
+      }
+      const url = URL.createObjectURL(new Blob(chunks, { type: "application/zip" }));
+      const a = document.createElement("a"); a.href = url; a.download = name; a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 60000);
+      btn.innerHTML = label;
+    } catch (e) {
+      btn.textContent = "⇩ 下載失敗，再按一次";
+    } finally { joining = false; }
   }
 
   function primary(i) {

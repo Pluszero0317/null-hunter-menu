@@ -3,3 +3,6 @@ videos/*.mp4
 videos/*.webm
 Thumbs.db
 desktop.ini
+
+# 完整檔超過 100MB 不進 git；線上用 downloads/unreal/ 的分段檔
+downloads/NullHunter_Unreal_Windows.zip
