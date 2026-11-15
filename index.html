@@ -351,7 +351,7 @@
       return;
     }
     galleryIndex = -1;
-    hint.textContent = GAME_HINT;
+    hint.textContent = what === "video" ? "Esc 或「返回選單」回到選單。" : GAME_HINT;
     const g = games[i];
     if (what === "download") {
       if (g.downloadParts) { joinDownload(g, btn); return; }
