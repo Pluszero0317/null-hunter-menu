@@ -99,6 +99,10 @@
   .key { display: inline-block; min-width: 28px; padding: 2px 7px; margin: 0 2px; border: 2px solid var(--muted); border-bottom-width: 4px; font-family: "NH HUD", sans-serif; color: var(--cream); }
   footer { text-align: center; margin-top: 18px; font-family: "NH Han Body", sans-serif; font-size: 12px; color: var(--muted); line-height: 1.7; }
 
+  /* 音樂開關 */
+  .music { position: fixed; top: 14px; right: 16px; z-index: 5; --accent: var(--cyan); background: var(--navy); font-size: 15px; padding: 7px 12px; }
+  .music[aria-pressed="false"] { --accent: var(--muted); color: var(--muted); }
+
   /* 遊戲畫面 */
   .player { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column; background: var(--navy); }
   .player.open { display: flex; }
@@ -125,6 +129,8 @@
     <div class="layer front"></div>
   </div>
 
+  <button class="btn music" id="musicBtn" type="button" aria-pressed="true">♪ 音樂 開</button>
+
   <main>
     <header>
       <img class="logo" src="assets/logo.png" alt="NULL HUNTER 除錯獵人">
@@ -141,6 +147,7 @@
       <span class="key">←</span><span class="key">→</span> 選擇引擎／美術
       <span class="key">Enter</span> 開始
       <span class="key">Esc</span> 回到選單（遊戲內的 Esc 是暫停）
+      <span class="key">M</span> 音樂開關
     </p>
     <footer>
       三款原型使用同一份規格、素材與提示詞範本，由 Claude Code 透過 MCP 協助製作。<br>
@@ -166,6 +173,35 @@
   const total = () => cardsEl.children.length;
   const GAME_HINT = "點一下遊戲畫面再開始操作。WASD／方向鍵移動，J／Space 射擊，Enter 確認。";
   let galleryIndex = -1;
+
+  // 音樂：素材包 bgm_menu（循環）＋ ui_move／ui_confirm。瀏覽器要等第一次點擊或按鍵才能出聲。
+  const bgm = new Audio("assets/audio/bgm_menu.wav");
+  bgm.loop = true; bgm.volume = 0.35; bgm.preload = "auto";
+  const sfx = { move: "assets/audio/ui_move.wav", confirm: "assets/audio/ui_confirm.wav" };
+  const musicBtn = document.getElementById("musicBtn");
+  let musicOn = true;
+  try { musicOn = localStorage.getItem("nh_music") !== "off"; } catch (e) {}
+  let unlocked = false;
+  function syncMusic() {
+    musicBtn.setAttribute("aria-pressed", musicOn ? "true" : "false");
+    musicBtn.textContent = musicOn ? "♪ 音樂 開" : "♪ 音樂 關";
+    const shouldPlay = musicOn && unlocked && !player.classList.contains("open");
+    if (shouldPlay && bgm.paused) bgm.play().catch(() => {});
+    if (!shouldPlay && !bgm.paused) bgm.pause();
+  }
+  function play(name) {
+    if (!musicOn || !unlocked) return;
+    const a = new Audio(sfx[name]); a.volume = 0.5; a.play().catch(() => {});
+  }
+  function unlock() { if (!unlocked) { unlocked = true; syncMusic(); } }
+  document.addEventListener("pointerdown", unlock, true);
+  document.addEventListener("keydown", unlock, true);
+  function toggleMusic() {
+    musicOn = !musicOn;
+    try { localStorage.setItem("nh_music", musicOn ? "on" : "off"); } catch (e) {}
+    syncMusic();
+  }
+  musicBtn.addEventListener("click", (e) => { e.stopPropagation(); unlock(); toggleMusic(); });
   const cardsEl = document.getElementById("cards");
   const player = document.getElementById("player");
   const frame = document.getElementById("frame");
@@ -292,6 +328,8 @@
 
   function act(i, what, btn) {
     if (!btn || btn.getAttribute("aria-disabled") === "true") return;
+    play("confirm");
+    setTimeout(syncMusic, 0);
     const hint = document.getElementById("playerHint");
     if (what === "flow" || what === "gallery") {
       document.getElementById("playerTitle").textContent = "NULL HUNTER｜美術" + (what === "flow" ? "完整流程預覽" : "場景圖庫");
@@ -330,6 +368,7 @@
     player.classList.remove("open");
     if (document.fullscreenElement) document.exitFullscreen();
     cardsEl.children[selected] && cardsEl.children[selected].focus();
+    syncMusic();
   }
 
   document.getElementById("closeBtn").addEventListener("click", close);
@@ -344,6 +383,8 @@
       else if (galleryIndex >= 0 && e.key === "ArrowLeft") showScene(galleryIndex - 1);
       return;
     }
+    if (e.key === "m" || e.key === "M") { toggleMusic(); return; }
+    if (e.key.startsWith("Arrow")) play("move");
     if (e.key === "ArrowRight" || e.key === "ArrowDown") { selected = (selected + 1) % total(); highlight(); cardsEl.children[selected].focus(); e.preventDefault(); }
     else if (e.key === "ArrowLeft" || e.key === "ArrowUp") { selected = (selected + total() - 1) % total(); highlight(); cardsEl.children[selected].focus(); e.preventDefault(); }
     else if (e.key === "Enter" && !e.target.closest(".btn")) { primary(selected); e.preventDefault(); }
