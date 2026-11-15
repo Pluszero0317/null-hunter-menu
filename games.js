@@ -62,7 +62,7 @@ window.NULL_HUNTER_ART = {
   name: "Art",
   version: "4.8",
   title: "美術製作",
-  meta: "主操 李皓勤｜Flow 美術資產包",
+  meta: "主操 李浩勤｜Flow 美術資產包",
   color: "#B9B2E8",
   preview: "art/preview.html",
   cover: "art/scenes/07_normal_battle.png",
