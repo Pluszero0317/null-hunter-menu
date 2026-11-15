@@ -50,10 +50,10 @@ window.NULL_HUNTER_GAMES = [
     download: "downloads/NullHunter_Unreal_Windows.zip",
     // 超過 GitHub 單檔 100MB，拆成 4 份放上去，下載時在瀏覽器裡接回一個 zip
     downloadParts: [0, 1, 2, 3].map(n => "downloads/unreal/NullHunter_Unreal_Windows.zip.part" + n),
-    video: "videos/NullHunter_Unreal.mp4",
+    video: null,
     screenshot: null,
-    note: "Unreal 5 沒有官方網頁版，請下載 Windows 版或看實機錄影。",
-    stats: { modules: null, firstPass: null, exeSize: null, fps: null }
+    note: "實戰版：M1–M7 全部完成。Unreal 5 沒有官方網頁版，請下載 Windows 版（解壓後執行 NullHunter.exe）。頭目戰 FPS 尚未量測。",
+    stats: { modules: 7, firstPass: 38, exeSize: 476, fps: null }
   }
 ];
 
