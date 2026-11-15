@@ -1,0 +1,2 @@
+NULL HUNTER 4.1 font derivatives. Original copyright and OFL terms apply.
+Glyph outlines slanted right by 12 degrees; advance widths preserved; horizontal bearings recalculated. Font family and PostScript names changed. No runtime italic or horizontal compression. Source font files remain in the parent folders.

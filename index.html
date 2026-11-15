@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NULL HUNTER｜三引擎遊戲選單</title>
+<style>
+  @font-face { font-family: "NH HUD"; src: url("assets/fonts/NullHunterHUD-Oblique.ttf") format("truetype"); font-display: swap; }
+  @font-face { font-family: "NH Title"; src: url("assets/fonts/Exo2-BlackItalic.ttf") format("truetype"); font-display: swap; }
+  @font-face { font-family: "NH Han Display"; src: url("assets/fonts/NullHunterHan-DisplayOblique.otf") format("opentype"); font-display: swap; }
+  @font-face { font-family: "NH Han Body"; src: url("assets/fonts/NullHunterHan-BodyOblique.ttf") format("truetype"); font-display: swap; }
+
+  :root {
+    --navy: #10142B;
+    --deep: #1B0F45;
+    --purple: #3A1C8C;
+    --violet: #6B3FD6;
+    --pink: #FF4FA3;
+    --magenta: #C72E78;
+    --blue: #2D8CFF;
+    --cyan: #45E6E1;
+    --cream: #F4F3E9;
+    --muted: #B9B2E8;
+    --line: #5B3BC4;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: "NH HUD", "NH Han Body", "Microsoft JhengHei", sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* 三層背景：40／80／120 的比例放慢成背景動畫 */
+  .scene { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--deep); }
+  .layer { position: absolute; inset: 0; background-repeat: repeat-x; background-size: auto 100%; background-position: 0 0; image-rendering: pixelated; }
+  .layer.far { background-image: url("assets/bg_far.png"); animation: scroll 128s linear infinite; }
+  .layer.mid { background-image: url("assets/bg_mid.png"); animation: scroll 64s linear infinite; opacity: .9; }
+  .layer.front { background-image: url("assets/bg_front.png"); animation: scroll 42.7s linear infinite; opacity: .35; }
+  .scene::after { content: ""; position: absolute; inset: 0; background: rgba(27, 15, 69, .55); }
+  @keyframes scroll { from { background-position-x: 0; } to { background-position-x: -177.78vh; } }
+  @media (prefers-reduced-motion: reduce) { .layer { animation: none; } }
+
+  main { position: relative; z-index: 1; max-width: 1320px; margin: 0 auto; padding: 24px 16px 48px; }
+
+  header { text-align: center; }
+  .logo { width: min(460px, 82vw); height: auto; display: block; margin: 0 auto; }
+  .tagline { font-family: "NH HUD", "NH Han Display", sans-serif; font-size: clamp(18px, 2.6vw, 26px); margin: 4px 0 6px; letter-spacing: .04em; }
+  .tagline b { color: var(--cyan); font-weight: normal; }
+  .sub { font-family: "NH Han Body", sans-serif; color: var(--muted); font-size: 15px; margin: 0; }
+
+  .notice { display: none; margin: 18px auto 0; max-width: 720px; border: 2px solid var(--pink); background: var(--navy); padding: 12px 14px; font-family: "NH Han Body", sans-serif; font-size: 14px; line-height: 1.6; }
+  .notice.show { display: block; }
+  .notice code { color: var(--cyan); }
+
+  .cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 28px; }
+  @media (max-width: 1100px) { .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+
+  .card {
+    --accent: var(--cyan);
+    position: relative; display: flex; flex-direction: column;
+    background: var(--navy); border: 3px solid var(--line);
+    outline: none; cursor: pointer;
+    transition: transform .12s ease, border-color .12s ease;
+  }
+  .card:hover, .card.selected { border-color: var(--accent); transform: translateY(-4px); }
+  .card .bar { height: 8px; background: var(--accent); }
+  .card .head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 14px 16px 6px; }
+  .card .engine { font-family: "NH Title", sans-serif; font-size: 34px; line-height: 1; color: var(--accent); letter-spacing: .02em; }
+  .card .engine.han { font-family: "NH Han Display", "NH Title", sans-serif; font-size: 30px; }
+  .card .ver { font-size: 14px; color: var(--muted); white-space: nowrap; }
+  .card .meta { padding: 0 16px; font-family: "NH Han Body", sans-serif; font-size: 13px; color: var(--muted); }
+  .card .shot { position: relative; margin: 12px 16px 0; aspect-ratio: 16 / 9; border: 2px solid var(--line); background: var(--deep) center / cover no-repeat; overflow: hidden; }
+  .card .shot .chip { position: absolute; left: 8px; top: 8px; font-family: "NH Han Body", sans-serif; font-size: 12px; padding: 3px 8px; background: var(--navy); border: 2px solid var(--accent); color: var(--cream); }
+  .card .shot .sel { position: absolute; right: 8px; bottom: 6px; font-family: "NH HUD", sans-serif; font-size: 14px; color: var(--accent); opacity: 0; }
+  .card.selected .shot .sel { opacity: 1; }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin: 12px 16px 0; border: 2px solid var(--line); }
+  .stat { padding: 8px 4px; text-align: center; border-right: 2px solid var(--line); }
+  .stat:last-child { border-right: 0; }
+  .stat .v { font-family: "NH HUD", sans-serif; font-size: 18px; color: var(--cream); }
+  .stat .k { font-family: "NH Han Body", sans-serif; font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .note { margin: 10px 16px 0; font-family: "NH Han Body", sans-serif; font-size: 13px; line-height: 1.5; color: var(--cream); }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 16px 16px; margin-top: auto; }
+  .btn {
+    font-family: "NH HUD", "NH Han Display", sans-serif; font-size: 16px;
+    padding: 9px 14px; border: 2px solid var(--accent); background: transparent; color: var(--cream);
+    cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn.primary { background: var(--accent); color: var(--navy); }
+  .btn:hover:not([aria-disabled="true"]) { background: var(--cream); border-color: var(--cream); color: var(--navy); }
+  .btn[aria-disabled="true"] { border-color: #4A3E86; color: #7D74B5; background: transparent; cursor: not-allowed; }
+  .btn:focus-visible { outline: 3px solid var(--cream); outline-offset: 2px; }
+
+  .keys { text-align: center; margin-top: 26px; font-family: "NH Han Body", sans-serif; font-size: 14px; color: var(--muted); }
+  .key { display: inline-block; min-width: 28px; padding: 2px 7px; margin: 0 2px; border: 2px solid var(--muted); border-bottom-width: 4px; font-family: "NH HUD", sans-serif; color: var(--cream); }
+  footer { text-align: center; margin-top: 18px; font-family: "NH Han Body", sans-serif; font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+  /* 遊戲畫面 */
+  .player { position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column; background: var(--navy); }
+  .player.open { display: flex; }
+  .player .top { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 3px solid var(--line); }
+  .player .title { font-family: "NH Title", sans-serif; font-size: 22px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .player .stage { flex: 1; display: grid; place-items: center; padding: 12px; min-height: 0; }
+  .player .frame { width: min(100%, calc((100vh - 90px) * 16 / 9)); aspect-ratio: 16 / 9; border: 3px solid var(--line); background: #000; }
+  .player iframe, .player video { width: 100%; height: 100%; border: 0; display: block; background: #000; }
+  /* 場景圖庫 */
+  .gallery { position: relative; width: 100%; height: 100%; background: #000; }
+  .gallery img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .gallery .cap { position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px; background: rgba(16, 20, 43, .85); font-family: "NH Han Body", sans-serif; font-size: 14px; }
+  .gallery .cap b { font-family: "NH HUD", sans-serif; font-weight: normal; color: var(--muted); }
+  .gallery .nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 64px; border: 2px solid var(--line); background: rgba(16, 20, 43, .8); color: var(--cream); font-family: "NH HUD", sans-serif; font-size: 22px; cursor: pointer; }
+  .gallery .nav:hover { background: var(--cream); color: var(--navy); }
+  .gallery .nav.prev { left: 8px; } .gallery .nav.next { right: 8px; }
+  .player .hint { font-family: "NH Han Body", sans-serif; font-size: 12px; color: var(--muted); text-align: center; padding: 0 16px 10px; }
+</style>
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <div class="layer far"></div>
+    <div class="layer mid"></div>
+    <div class="layer front"></div>
+  </div>
+
+  <main>
+    <header>
+      <img class="logo" src="assets/logo.png" alt="NULL HUNTER 除錯獵人">
+      <p class="tagline">同一款遊戲 <b>×</b> 同一個 AI <b>×</b> 三款引擎</p>
+      <p class="sub">主流遊戲引擎之 AI 導入與效益實測｜實踐大學 115 學年度第 1 學期 學生學習社群</p>
+      <div class="notice" id="fileNotice">
+        直接點兩下開啟 index.html 時，瀏覽器不允許載入遊戲。請改用資料夾裡的 <code>啟動選單.bat</code> 開啟，或把整個資料夾放到 GitHub Pages、itch.io 等網站上。
+      </div>
+    </header>
+
+    <section class="cards" id="cards" aria-label="選擇引擎版本"></section>
+
+    <p class="keys">
+      <span class="key">←</span><span class="key">→</span> 選擇引擎／美術
+      <span class="key">Enter</span> 開始
+      <span class="key">Esc</span> 回到選單（遊戲內的 Esc 是暫停）
+    </p>
+    <footer>
+      三款原型使用同一份規格、素材與提示詞範本，由 Claude Code 透過 MCP 協助製作。<br>
+      網頁版另外匯出，只供展示試玩；效能數據一律以 Windows 執行檔量測。
+    </footer>
+  </main>
+
+  <div class="player" id="player" role="dialog" aria-modal="true" aria-labelledby="playerTitle">
+    <div class="top">
+      <div class="title" id="playerTitle">NULL HUNTER</div>
+      <button class="btn" id="fullBtn" type="button">全螢幕</button>
+      <button class="btn primary" id="closeBtn" type="button">返回選單</button>
+    </div>
+    <div class="stage"><div class="frame" id="frame"></div></div>
+    <div class="hint" id="playerHint">點一下遊戲畫面再開始操作。WASD／方向鍵移動，J／Space 射擊，Enter 確認。</div>
+  </div>
+
+<script src="games.js"></script>
+<script>
+(function () {
+  const games = window.NULL_HUNTER_GAMES || [];
+  const art = window.NULL_HUNTER_ART || null;
+  const total = () => cardsEl.children.length;
+  const GAME_HINT = "點一下遊戲畫面再開始操作。WASD／方向鍵移動，J／Space 射擊，Enter 確認。";
+  let galleryIndex = -1;
+  const cardsEl = document.getElementById("cards");
+  const player = document.getElementById("player");
+  const frame = document.getElementById("frame");
+  const isFile = location.protocol === "file:";
+  if (isFile) document.getElementById("fileNotice").classList.add("show");
+
+  const shots = ["assets/preview_battle.png", "assets/preview_boss.png", "assets/preview_battle.png"];
+  const shotOf = (g, i) => g.screenshot || shots[i % shots.length];
+  let selected = 0;
+
+  function fmt(v, unit) { return v === null || v === undefined || v === "" ? "—" : v + (unit || ""); }
+
+  async function exists(path) {
+    if (!path || isFile) return false;
+    try { const r = await fetch(path, { method: "HEAD", cache: "no-store" }); return r.ok; }
+    catch (e) { return false; }
+  }
+
+  function render() {
+    cardsEl.innerHTML = "";
+    games.forEach((g, i) => {
+      const card = document.createElement("article");
+      card.className = "card" + (i === selected ? " selected" : "");
+      card.style.setProperty("--accent", g.color);
+      card.tabIndex = 0;
+      card.dataset.index = i;
+      card.setAttribute("aria-label", g.name + " 版本");
+      card.innerHTML = `
+        <div class="bar"></div>
+        <div class="head"><div class="engine">${g.name}</div><div class="ver">v${g.version}</div></div>
+        <div class="meta">${g.date} 實戰｜主操 ${g.lead}｜${g.language}</div>
+        <div class="shot" style="background-image:url('${shotOf(g, i)}')">
+          <span class="chip" data-chip>確認中…</span><span class="sel">▶ SELECT</span>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="v">${g.stats.modules == null ? "—" : g.stats.modules + "/6"}</div><div class="k">通過模組</div></div>
+          <div class="stat"><div class="v">${fmt(g.stats.firstPass, "%")}</div><div class="k">首次成功</div></div>
+          <div class="stat"><div class="v">${fmt(g.stats.exeSize, "MB")}</div><div class="k">執行檔</div></div>
+          <div class="stat"><div class="v">${fmt(g.stats.fps)}</div><div class="k">頭目戰 FPS</div></div>
+        </div>
+        ${g.note ? `<p class="note">${g.note}</p>` : ""}
+        <div class="actions">
+          ${g.web !== null ? `<a class="btn primary" data-act="play" aria-disabled="true">▶ 網頁試玩</a>` : ""}
+          ${g.video ? `<a class="btn ${g.web === null ? "primary" : ""}" data-act="video" aria-disabled="true">▶ 實機錄影</a>` : ""}
+          ${g.download ? `<a class="btn" data-act="download" aria-disabled="true" href="${g.download}" download>⇩ Windows 版</a>` : ""}
+        </div>`;
+      card.addEventListener("click", (e) => {
+        selected = i; highlight();
+        const btn = e.target.closest("[data-act]");
+        if (btn) { e.preventDefault(); act(i, btn.dataset.act, btn); }
+      });
+      card.addEventListener("focus", () => { selected = i; highlight(); });
+      cardsEl.appendChild(card);
+      check(card, g);
+    });
+    if (art) renderArt(games.length);
+  }
+
+  function renderArt(i) {
+    const card = document.createElement("article");
+    card.className = "card" + (i === selected ? " selected" : "");
+    card.style.setProperty("--accent", art.color);
+    card.tabIndex = 0;
+    card.dataset.index = i;
+    card.setAttribute("aria-label", art.title);
+    card.innerHTML = `
+      <div class="bar"></div>
+      <div class="head"><div class="engine han">${art.title}</div><div class="ver">v${art.version}</div></div>
+      <div class="meta">${art.meta}</div>
+      <div class="shot" style="background-image:url('${art.cover}')">
+        <span class="chip" data-chip>確認中…</span><span class="sel">▶ SELECT</span>
+      </div>
+      <div class="stats">
+        ${art.stats.map(s => `<div class="stat"><div class="v">${s.v}</div><div class="k">${s.k}</div></div>`).join("")}
+      </div>
+      ${art.note ? `<p class="note">${art.note}</p>` : ""}
+      <div class="actions">
+        <a class="btn primary" data-act="flow" aria-disabled="true">▶ 完整流程預覽</a>
+        <a class="btn" data-act="gallery" aria-disabled="false">▦ 場景圖庫</a>
+      </div>`;
+    card.addEventListener("click", (e) => {
+      selected = i; highlight();
+      const btn = e.target.closest("[data-act]");
+      if (btn) { e.preventDefault(); act(i, btn.dataset.act, btn); }
+    });
+    card.addEventListener("focus", () => { selected = i; highlight(); });
+    cardsEl.appendChild(card);
+    exists(art.preview).then(ok => {
+      card.querySelector('[data-act="flow"]').setAttribute("aria-disabled", ok ? "false" : "true");
+      card.querySelector("[data-chip]").textContent = isFile ? "圖庫可看；預覽請用啟動選單.bat" : (ok ? "美術預覽可看" : "預覽檔還沒放入");
+    });
+  }
+
+  function showScene(n) {
+    const list = art.scenes;
+    galleryIndex = (n + list.length) % list.length;
+    const s = list[galleryIndex];
+    frame.innerHTML = `
+      <div class="gallery">
+        <img src="${s.src}" alt="${s.label}">
+        <button class="nav prev" type="button" aria-label="上一張">‹</button>
+        <button class="nav next" type="button" aria-label="下一張">›</button>
+        <div class="cap"><span>${s.label}</span><b>${galleryIndex + 1} / ${list.length}</b></div>
+      </div>`;
+    frame.querySelector(".prev").onclick = () => showScene(galleryIndex - 1);
+    frame.querySelector(".next").onclick = () => showScene(galleryIndex + 1);
+  }
+
+  async function check(card, g) {
+    const [web, dl, vid] = await Promise.all([exists(g.web), exists(g.download), exists(g.video)]);
+    const set = (act, ok) => { const b = card.querySelector(`[data-act="${act}"]`); if (b) b.setAttribute("aria-disabled", ok ? "false" : "true"); };
+    set("play", web); set("download", dl); set("video", vid);
+    const chip = card.querySelector("[data-chip]");
+    if (isFile) chip.textContent = "請用啟動選單.bat 開啟";
+    else if (web) chip.textContent = "網頁版可玩";
+    else if (g.web === null && (dl || vid)) chip.textContent = "Windows 版／實機錄影";
+    else if (dl) chip.textContent = "可下載 Windows 版";
+    else chip.textContent = "實戰後放入";
+  }
+
+  function highlight() {
+    [...cardsEl.children].forEach((c, i) => c.classList.toggle("selected", i === selected));
+  }
+
+  function act(i, what, btn) {
+    if (!btn || btn.getAttribute("aria-disabled") === "true") return;
+    const hint = document.getElementById("playerHint");
+    if (what === "flow" || what === "gallery") {
+      document.getElementById("playerTitle").textContent = "NULL HUNTER｜美術" + (what === "flow" ? "完整流程預覽" : "場景圖庫");
+      if (what === "flow") {
+        galleryIndex = -1;
+        frame.innerHTML = `<iframe src="${art.preview}" title="美術完整流程預覽" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+        hint.textContent = "這是美術資產包的流程演示（模擬碰撞），不是三引擎做出來的遊戲。";
+      } else {
+        showScene(0);
+        hint.textContent = "← → 切換場景，Esc 回到選單。";
+      }
+      player.classList.add("open");
+      return;
+    }
+    galleryIndex = -1;
+    hint.textContent = GAME_HINT;
+    const g = games[i];
+    if (what === "download") { const a = document.createElement("a"); a.href = g.download; a.download = ""; a.click(); return; }
+    document.getElementById("playerTitle").textContent = "NULL HUNTER｜" + g.name + (what === "video" ? " 實機錄影" : " 網頁版");
+    frame.innerHTML = what === "video"
+      ? `<video src="${g.video}" controls autoplay playsinline></video>`
+      : `<iframe src="${g.web}" title="${g.name} 網頁版" allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>`;
+    player.classList.add("open");
+    const f = frame.firstElementChild; setTimeout(() => f && f.focus(), 300);
+  }
+
+  function primary(i) {
+    const card = cardsEl.children[i];
+    const btn = card && card.querySelector('.btn.primary[aria-disabled="false"]') || card && card.querySelector('[data-act][aria-disabled="false"]');
+    if (btn) act(i, btn.dataset.act, btn);
+  }
+
+  function close() {
+    frame.innerHTML = "";
+    galleryIndex = -1;
+    player.classList.remove("open");
+    if (document.fullscreenElement) document.exitFullscreen();
+    cardsEl.children[selected] && cardsEl.children[selected].focus();
+  }
+
+  document.getElementById("closeBtn").addEventListener("click", close);
+  document.getElementById("fullBtn").addEventListener("click", () => {
+    const f = frame.firstElementChild; if (f && f.requestFullscreen) f.requestFullscreen();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (player.classList.contains("open")) {
+      if (e.key === "Escape") close();
+      else if (galleryIndex >= 0 && e.key === "ArrowRight") showScene(galleryIndex + 1);
+      else if (galleryIndex >= 0 && e.key === "ArrowLeft") showScene(galleryIndex - 1);
+      return;
+    }
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") { selected = (selected + 1) % total(); highlight(); cardsEl.children[selected].focus(); e.preventDefault(); }
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") { selected = (selected + total() - 1) % total(); highlight(); cardsEl.children[selected].focus(); e.preventDefault(); }
+    else if (e.key === "Enter" && !e.target.closest(".btn")) { primary(selected); e.preventDefault(); }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
