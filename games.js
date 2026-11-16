@@ -54,7 +54,7 @@ window.NULL_HUNTER_GAMES = [
     video: "videos/NullHunter_Unreal_Highlight.mp4",
     videoLabel: "精華影片",
     screenshot: null,
-    note: "",
+    note: "Unreal 不支援匯出網頁版，請下載 Windows 版試玩",
     stats: { modules: 6, firstPass: 4, exeSize: 476, fps: null }
   }
 ];

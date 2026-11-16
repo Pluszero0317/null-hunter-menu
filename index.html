@@ -156,7 +156,9 @@
     <footer>
       三款原型使用同一份規格、素材與提示詞範本，由 Claude Code 透過 MCP 協助製作。<br>
       網頁版另外匯出，只供展示試玩；效能數據一律以 Windows 執行檔量測。<br>
-      目前數據取自 11/15 預演；首次通過＝第一次交付就被接受、之後沒有回報問題也沒有人工修補的模組數（滿分 6）；執行檔為匯出後遊戲資料夾大小。
+      目前數據取自 11/15 預演；首次通過＝第一次交付就被接受、之後沒有回報問題也沒有人工修補的模組數（滿分 6）；執行檔為匯出後遊戲資料夾大小。<br>
+      製作：管英序（Godot）、李佳霖（Unity）、林宥宏（Unreal）、李浩勤（美術）｜指導老師：高捷（實踐大學媒體傳達設計學系）<br>
+      字型：Noto Sans TC、Russo One、Exo 2（SIL Open Font License 1.1，NULL HUNTER 斜體為改名衍生版）；音樂與音效：ElevenLabs 生成；美術：Google Flow 生成
     </footer>
   </main>
 
@@ -171,7 +173,7 @@
     <div class="hint" id="playerHint">點一下遊戲畫面再開始操作。WASD／方向鍵移動，J／Space 射擊，Enter 確認。</div>
   </div>
 
-<script src="games.js?v=20261116c"></script>
+<script src="games.js?v=20261116d"></script>
 <script>
 (function () {
   const games = window.NULL_HUNTER_GAMES || [];
@@ -327,7 +329,7 @@
     else if (web) chip.textContent = "網頁版可玩";
     else if (g.web === null && (dl || vid)) chip.textContent = "Windows 版／實機錄影";
     else if (dl) chip.textContent = "可下載 Windows 版";
-    else chip.textContent = "實戰後放入";
+    else chip.textContent = "尚未提供";
   }
 
   function highlight() {
