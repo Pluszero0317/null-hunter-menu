@@ -15,12 +15,12 @@ window.NULL_HUNTER_GAMES = [
     lead: "管英序",
     language: "GDScript",
     color: "#45E6E1",
-    web: null,
+    web: "games/godot/index.html",
     download: "downloads/NullHunter_Godot_Windows.zip",
     video: "videos/NullHunter_Godot_Highlight.mp4",
     videoLabel: "精華影片",
     screenshot: null,
-    note: "實戰版：M1–M6 完成。請下載 Windows 版（解壓後執行 NullHunter.exe）。頭目戰 FPS 尚未量測。",
+    note: "實戰版：M1–M6 完成。可直接在網頁玩，也可下載 Windows 版。頭目戰 FPS 尚未量測。",
     stats: { modules: 6, firstPass: 45, exeSize: 137, fps: null }
   },
   {
