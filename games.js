@@ -20,7 +20,7 @@ window.NULL_HUNTER_GAMES = [
     video: "videos/NullHunter_Godot_Highlight.mp4",
     videoLabel: "精華影片",
     screenshot: null,
-    note: "實戰版：M1–M6 完成。可直接在網頁玩，也可下載 Windows 版。頭目戰 FPS 尚未量測。",
+    note: "",
     stats: { modules: 6, firstPass: 45, exeSize: 137, fps: null }
   },
   {
@@ -36,7 +36,7 @@ window.NULL_HUNTER_GAMES = [
     video: "videos/NullHunter_Highlight.mp4",
     videoLabel: "精華影片",
     screenshot: null,
-    note: "實戰版：M1–M7 全部完成。頭目戰 FPS 被 165Hz 螢幕的垂直同步鎖住（1% low 164.8）。",
+    note: "",
     stats: { modules: 7, firstPass: 23, exeSize: 195, fps: 165 }
   },
   {
@@ -54,7 +54,7 @@ window.NULL_HUNTER_GAMES = [
     video: "videos/NullHunter_Unreal_Highlight.mp4",
     videoLabel: "精華影片",
     screenshot: null,
-    note: "實戰版：M1–M7 全部完成。Unreal 5 沒有官方網頁版，請下載 Windows 版（解壓後執行 NullHunter.exe）。頭目戰 FPS 尚未量測。",
+    note: "",
     stats: { modules: 7, firstPass: 38, exeSize: 476, fps: null }
   }
 ];
@@ -68,7 +68,7 @@ window.NULL_HUNTER_ART = {
   color: "#B9B2E8",
   preview: "art/preview.html",
   cover: "art/scenes/07_normal_battle.png",
-  note: "完整流程預覽可看故事、轉場、Cube 修復、頭目戰與成功／失敗結局；場景圖庫是 11 個畫面的素材對照。",
+  note: "",
   stats: [
     { v: "11", k: "場景" },
     { v: "140", k: "特效格" },
