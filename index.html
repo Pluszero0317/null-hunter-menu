@@ -155,7 +155,8 @@
     </p>
     <footer>
       三款原型使用同一份規格、素材與提示詞範本，由 Claude Code 透過 MCP 協助製作。<br>
-      網頁版另外匯出，只供展示試玩；效能數據一律以 Windows 執行檔量測。
+      網頁版另外匯出，只供展示試玩；效能數據一律以 Windows 執行檔量測。<br>
+      目前數據取自 11/15 預演；首次通過＝第一次交付就被接受、之後沒有回報問題也沒有人工修補的模組數（滿分 6）；執行檔為匯出後遊戲資料夾大小。
     </footer>
   </main>
 
@@ -170,7 +171,7 @@
     <div class="hint" id="playerHint">點一下遊戲畫面再開始操作。WASD／方向鍵移動，J／Space 射擊，Enter 確認。</div>
   </div>
 
-<script src="games.js?v=20261116b"></script>
+<script src="games.js?v=20261116c"></script>
 <script>
 (function () {
   const games = window.NULL_HUNTER_GAMES || [];
@@ -244,8 +245,8 @@
           ${g.video ? `<span class="watch">▶ 點擊看${g.videoLabel || "影片"}</span>` : ""}
         </div>
         <div class="stats">
-          <div class="stat"><div class="v">${g.stats.modules == null ? "—" : g.stats.modules + "/7"}</div><div class="k">通過模組</div></div>
-          <div class="stat"><div class="v">${fmt(g.stats.firstPass, "%")}</div><div class="k">首次成功</div></div>
+          <div class="stat"><div class="v">${g.stats.modules == null ? "—" : g.stats.modules + "/6"}</div><div class="k">通過模組</div></div>
+          <div class="stat"><div class="v">${g.stats.firstPass == null ? "—" : g.stats.firstPass + "/6"}</div><div class="k">首次通過</div></div>
           <div class="stat"><div class="v">${fmt(g.stats.exeSize, "MB")}</div><div class="k">執行檔</div></div>
           <div class="stat"><div class="v">${fmt(g.stats.fps)}</div><div class="k">頭目戰 FPS</div></div>
         </div>

@@ -21,7 +21,7 @@ window.NULL_HUNTER_GAMES = [
     videoLabel: "精華影片",
     screenshot: null,
     note: "",
-    stats: { modules: 6, firstPass: 45, exeSize: 137, fps: null }
+    stats: { modules: 6, firstPass: 3, exeSize: 130, fps: null }
   },
   {
     id: "unity",
@@ -37,7 +37,7 @@ window.NULL_HUNTER_GAMES = [
     videoLabel: "精華影片",
     screenshot: null,
     note: "",
-    stats: { modules: 7, firstPass: 23, exeSize: 195, fps: 165 }
+    stats: { modules: 6, firstPass: 4, exeSize: 195, fps: 165 }
   },
   {
     id: "unreal",
@@ -55,7 +55,7 @@ window.NULL_HUNTER_GAMES = [
     videoLabel: "精華影片",
     screenshot: null,
     note: "",
-    stats: { modules: 7, firstPass: 38, exeSize: 476, fps: null }
+    stats: { modules: 6, firstPass: 4, exeSize: 476, fps: null }
   }
 ];
 
