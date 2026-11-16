@@ -21,7 +21,7 @@ window.NULL_HUNTER_GAMES = [
     videoLabel: "精華影片",
     screenshot: null,
     note: "實戰版：M1–M6 完成。請下載 Windows 版（解壓後執行 NullHunter.exe）。頭目戰 FPS 尚未量測。",
-    stats: { modules: 6, firstPass: 86, exeSize: 137, fps: null }
+    stats: { modules: 6, firstPass: 45, exeSize: 137, fps: null }
   },
   {
     id: "unity",
