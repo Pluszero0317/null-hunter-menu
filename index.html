@@ -371,7 +371,7 @@
                 <tr><td>人工修補次數</td><td>人親手修改程式碼、場景或設定的次數（依 git commit 計算）；另記每個模組從開始到通過的總分鐘數</td></tr>
                 <tr><td>錯誤類型</td><td>6 類：語法、版本不符、找不到物件、素材匯入、邏輯、外掛連線</td></tr>
                 <tr><td>重現成功</td><td>第二人用同一份提示詞，是否做出相同結果</td></tr>
-                <tr><td>效能</td><td>打包時間、執行檔大小、專案檔案大小、平均 FPS、CPU／GPU／記憶體用量（同一台筆電、同一段頭目戰）</td></tr>
+                <tr><td>效能</td><td>執行檔大小、專案檔案大小、平均 FPS、CPU／GPU／記憶體用量（同一台筆電、同一段頭目戰）</td></tr>
               </tbody>
             </table></div>
             <p class="small">執行檔大小為匯出後遊戲資料夾的總大小（Windows 檔案總管顯示的 MB），不含 .pdb 除錯檔。專案檔案大小的「原始檔」只算程式、場景與素材，「含快取」再加上引擎自動產生的快取，都不含 .git 與匯出檔。重現成功與 Claude 用量在預演時沒有記錄。</p>
@@ -429,7 +429,7 @@
             <div class="tbl"><table>
               <thead><tr><th>項目</th><th>規格</th></tr></thead>
               <tbody>
-                <tr><td>畫面</td><td>1280×720，鎖 60 FPS；背景兩層向左捲動（40、120 px/s）</td></tr>
+                <tr><td>畫面</td><td>1280×720，鎖 60 FPS；背景三層向左捲動（40、80、120 px/s）</td></tr>
                 <tr><td>操作</td><td>WASD 或方向鍵移動（八方向，斜向正規化）；按住 J 或空白鍵連射；Enter 確認</td></tr>
                 <tr><td>玩家</td><td>出生 (160, 360)；速度 420 px/s；距邊緣 32 px 內不可出界；血量 3；受傷後無敵 1.5 秒</td></tr>
                 <tr><td>子彈</td><td>8 發/s、900 px/s、傷害 1；飛出畫面即刪除</td></tr>
@@ -437,8 +437,8 @@
                 <tr><td>射擊蟲</td><td>HP 3；向左 100 px/s；每 2 秒朝玩家射 1 發（300 px/s）；300 分</td></tr>
                 <tr><td>頭目</td><td>HP 60；第 93 秒進場停在 x = 1060，上下來回 80 px/s；每 1.2 秒扇形 5 發（間距 15°、320 px/s）；擊敗得 3000 分並通關</td></tr>
                 <tr><td>碰撞</td><td>一律圓形：玩家 6、直線蟲 22、射擊蟲 28、頭目 80、子彈 6–7</td></tr>
-                <tr><td>音訊</td><td>背景音樂循環；音效 3 個：射擊、爆炸、玩家受傷</td></tr>
-                <tr><td>字型</td><td>Noto Sans TC（三款引擎預設沒有中文，必須匯入）</td></tr>
+                <tr><td>音訊</td><td>4 段背景音樂；14 類音效，每類 3 個變體，共 46 份 WAV</td></tr>
+                <tr><td>字型</td><td>Exo 2、Russo One、Noto Sans TC（三款引擎預設沒有中文，必須匯入；遊戲內使用改名的斜體衍生版）</td></tr>
               </tbody>
             </table></div>
           </div>
@@ -758,7 +758,7 @@
       網頁版另外匯出，只供展示試玩；效能數據一律以 Windows 執行檔量測。<br>
       目前數據取自 11/15 預演；首次通過＝第一次交付就被接受、之後沒有回報問題也沒有人工修補的模組數（滿分 6）；執行檔為匯出後遊戲資料夾大小。<br>
       製作：管英序（Godot）、李佳霖（Unity）、林宥宏（Unreal）、李浩勤（美術）｜指導老師：高捷（實踐大學媒體傳達設計學系）<br>
-      字型：Noto Sans TC、Russo One、Exo 2（SIL Open Font License 1.1，NULL HUNTER 斜體為改名衍生版）；音樂與音效：ElevenLabs 生成；美術：Google Flow 生成
+      字型：Noto Sans TC、Russo One、Exo 2（SIL Open Font License 1.1，NULL HUNTER 斜體為改名衍生版）；音樂與音效：ElevenLabs 生成；美術：ChatGPT 圖像生成
     </footer>
   </main>
 
