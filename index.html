@@ -35,9 +35,9 @@
   /* 三層背景：40／80／120 的比例放慢成背景動畫 */
   .scene { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--deep); }
   .layer { position: absolute; inset: 0; background-repeat: repeat-x; background-size: auto 100%; background-position: 0 0; image-rendering: pixelated; }
-  .layer.far { background-image: url("assets/bg_far.png"); animation: scroll 128s linear infinite; }
-  .layer.mid { background-image: url("assets/bg_mid.png"); animation: scroll 64s linear infinite; opacity: .9; }
-  .layer.front { background-image: url("assets/bg_front.png"); animation: scroll 42.7s linear infinite; opacity: .35; }
+  .layer.far { background-image: url("assets/bg_far.webp"); animation: scroll 128s linear infinite; }
+  .layer.mid { background-image: url("assets/bg_mid.webp"); animation: scroll 64s linear infinite; opacity: .9; }
+  .layer.front { background-image: url("assets/bg_front.webp"); animation: scroll 42.7s linear infinite; opacity: .35; }
   .scene::after { content: ""; position: absolute; inset: 0; background: rgba(27, 15, 69, .55); }
   @keyframes scroll { from { background-position-x: 0; } to { background-position-x: -177.78vh; } }
   @media (prefers-reduced-motion: reduce) { .layer { animation: none; } }
@@ -144,7 +144,7 @@
 
   <main>
     <header>
-      <img class="logo" src="assets/logo.png" alt="NULL HUNTER 除錯獵人">
+      <img class="logo" src="assets/logo.webp" alt="NULL HUNTER 除錯獵人">
       <p class="tagline">同一款遊戲 <b>×</b> 同一個 AI <b>×</b> 三款引擎</p>
       <p class="sub">主流遊戲引擎之 AI 導入與效益實測｜實踐大學 115 學年度第 1 學期 學生學習社群</p>
       <div class="notice" id="fileNotice">
@@ -181,7 +181,7 @@
     <div class="hint" id="playerHint">點一下遊戲畫面再開始操作。WASD／方向鍵移動，J／Space 射擊，Enter 確認。</div>
   </div>
 
-<script src="games.js?v=20261116d"></script>
+<script src="games.js?v=20261117a"></script>
 <script>
 (function () {
   const games = window.NULL_HUNTER_GAMES || [];
@@ -191,8 +191,8 @@
   let galleryIndex = -1;
 
   // 音樂：素材包 bgm_menu（循環）＋ ui_move／ui_confirm。瀏覽器要等第一次點擊或按鍵才能出聲。
-  const bgm = new Audio("assets/audio/bgm_menu.wav");
-  bgm.loop = true; bgm.volume = 0.35; bgm.preload = "auto";
+  const bgm = new Audio("assets/audio/bgm_menu.mp3");
+  bgm.loop = true; bgm.volume = 0.35; bgm.preload = "none"; // 第一次點擊後才下載
   const sfx = { move: "assets/audio/ui_move.wav", confirm: "assets/audio/ui_confirm.wav" };
   const musicBtn = document.getElementById("musicBtn");
   let musicOn = true;
@@ -224,7 +224,7 @@
   const isFile = location.protocol === "file:";
   if (isFile) document.getElementById("fileNotice").classList.add("show");
 
-  const shots = ["assets/preview_battle.png", "assets/preview_boss.png", "assets/preview_battle.png"];
+  const shots = ["assets/preview_battle.webp", "assets/preview_boss.webp", "assets/preview_battle.webp"];
   const shotOf = (g, i) => g.screenshot || shots[i % shots.length];
   let selected = 0;
 

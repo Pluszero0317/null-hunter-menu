@@ -35,9 +35,9 @@
   /* 三層背景：40／80／120 的比例放慢成背景動畫 */
   .scene { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--deep); }
   .layer { position: absolute; inset: 0; background-repeat: repeat-x; background-size: auto 100%; background-position: 0 0; image-rendering: pixelated; }
-  .layer.far { background-image: url("assets/bg_far.png"); animation: scroll 128s linear infinite; }
-  .layer.mid { background-image: url("assets/bg_mid.png"); animation: scroll 64s linear infinite; opacity: .9; }
-  .layer.front { background-image: url("assets/bg_front.png"); animation: scroll 42.7s linear infinite; opacity: .35; }
+  .layer.far { background-image: url("assets/bg_far.webp"); animation: scroll 128s linear infinite; }
+  .layer.mid { background-image: url("assets/bg_mid.webp"); animation: scroll 64s linear infinite; opacity: .9; }
+  .layer.front { background-image: url("assets/bg_front.webp"); animation: scroll 42.7s linear infinite; opacity: .35; }
   .scene::after { content: ""; position: absolute; inset: 0; background: rgba(27, 15, 69, .55); }
   @keyframes scroll { from { background-position-x: 0; } to { background-position-x: -177.78vh; } }
   @media (prefers-reduced-motion: reduce) { .layer { animation: none; } }
@@ -130,8 +130,8 @@
   body { background: var(--deep); color: var(--cream); overflow-x: hidden; }
   .scene { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--deep); }
   .layer { position: absolute; inset: 0; background-repeat: repeat-x; background-size: auto 100%; image-rendering: pixelated; }
-  .layer.far { background-image: url("assets/bg_far.png"); }
-  .layer.mid { background-image: url("assets/bg_mid.png"); opacity: .9; }
+  .layer.far { background-image: url("assets/bg_far.webp"); }
+  .layer.mid { background-image: url("assets/bg_mid.webp"); opacity: .9; }
   .scene::after { content: ""; position: absolute; inset: 0; background: rgba(27, 15, 69, .7); }
   main { position: relative; z-index: 1; max-width: 1120px; margin: 0 auto; padding: 20px 16px 48px; }
   .home { display: block; width: min(260px, 60vw); margin: 0 auto; }
@@ -158,7 +158,7 @@
   </nav>
 
   <main>
-    <a class="home" href="index.html" aria-label="回遊戲選單"><img src="assets/logo.png" alt="NULL HUNTER 除錯獵人"></a>
+    <a class="home" href="index.html" aria-label="回遊戲選單"><img src="assets/logo.webp" alt="NULL HUNTER 除錯獵人"></a>
 
     <article class="report" id="report" aria-labelledby="reportTitle">
       <header class="report-head">

@@ -67,7 +67,7 @@ window.NULL_HUNTER_ART = {
   meta: "主操 李浩勤｜Flow 美術資產包",
   color: "#B9B2E8",
   preview: "art/preview.html",
-  cover: "art/scenes/07_normal_battle.png",
+  cover: "assets/art_cover.webp",
   note: "",
   stats: [
     { v: "11", k: "場景" },
