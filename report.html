@@ -198,6 +198,7 @@
             <tr><td class="c">5</td><td>極限實戰與社群共學合作</td><td>四人分題調查後互相教學；三場實戰，每場最後全員檢討</td><td>14 場活動共 57 小時；11/15 完成三引擎預演</td></tr>
           </tbody>
         </table></div>
+        <p class="small">活動地點為 A509 電腦教室與 A410 教室。</p>
       </section>
 
       <!-- 02 前期研究 -->
@@ -289,8 +290,12 @@
             <tr><th>頭目戰平均 FPS</th><td>未量測</td><td>165（VSync 上限）</td><td>未量測</td></tr>
             <tr><th>專案檔案大小（原始檔／含快取）</th><td>未量測</td><td>71MB／4,104MB</td><td>未量測</td></tr>
             <tr><th>硬體負擔（CPU／GPU／記憶體）</th><td>未量測</td><td>3.3%／8.6%／620MB</td><td>未量測</td></tr>
+            <tr><th>M1 素材匯入耗時</th><td>7 分</td><td>6 分</td><td>35 分</td></tr>
+            <tr><th>錯誤類型（次數）</th><td>找不到物件 1</td><td>邏輯 6、素材匯入 1、版本不符 1、找不到物件 1、語法 1</td><td>語法 3、版本不符 2、邏輯 2、外掛連線 1</td></tr>
+            <tr><th>測試設備</th><td>同一台筆電</td><td>ASUS TUF Gaming F15：i7-13620H、RTX 4070 Laptop、32GB</td><td>同一台筆電</td></tr>
           </tbody>
         </table></div>
+        <p><b>主要發現</b>　三組試玩後都要求敵人隨機出生、敵人逃走要扣血，也都遇到上方敵人打不到。AI 自測通過不等於好玩，三組都是試玩後才發現問題；Godot 在 Claude 額度用完後，由人補上血條介面、敵人動作與射擊手感。Unreal 的藍圖是圖形化節點，AI 無法直接用文字產生，實作改以 C++ 完成，C++ 編譯錯誤（C4458）是 Unreal 最常見的問題。</p>
         <details>
           <summary>指標怎麼算</summary>
           <div>
@@ -322,6 +327,19 @@
             </table></div>
           </div>
         </details>
+
+        <h4>結論與建議</h4>
+        <p>研究問題是「學生團隊該怎麼選引擎」。依本次預演，三款引擎都能用同一套 AI 工具做出同規格原型，差別在 AI 卡住的地方：</p>
+        <div class="tbl"><table>
+          <thead><tr><th>引擎</th><th>AI 卡住的地方</th><th>適合的團隊</th></tr></thead>
+          <tbody>
+            <tr><td class="godot">Godot</td><td>AI 開發時間最短（73 分），但規格以外的介面、敵人動作與手感要靠人補（人工修補 4 次）</td><td>電腦不強、想快速做 2D 原型</td></tr>
+            <tr><td class="unity">Unity</td><td>修改全部由 AI 完成（人工修補 0 次），但追問最多（5 次），要注意 Unity 6 改名的 API 與背景不編譯</td><td>需要大量教學資源、想長期學習</td></tr>
+            <tr><td class="unreal">Unreal</td><td>內建 MCP 的準備步驟最少，但 MCP 還不能建關卡、匯入字型與音效，M1 花了 35 分；AI 寫 C++ 時要會處理編譯錯誤</td><td>電腦夠力、需要高階畫面</td></tr>
+          </tbody>
+        </table></div>
+        <p class="q"><b>共同結論</b>　AI 能做出可運作的模組，但「好不好玩」要靠人試玩判斷。驗收標準要加入試玩項目，每個模組都要匯出執行檔實測。</p>
+        <p class="small">以上比較只限本社群的設備、成員經驗與指定任務，不外推為引擎優劣。</p>
 
         <h4>實測遊戲企劃：《Null Hunter：除錯獵人》</h4>
         <p>交件前一晚，學生專案的建置卡在 99%：AI 自動生成的程式碼失控，每個未處理的錯誤都變成蟲，湧向建置核心。玩家駕駛除錯游標機 Cursor-01 把蟲清乾淨，最後擊敗所有報錯的源頭 NullReference。</p>
@@ -374,6 +392,13 @@
             </table></div>
           </div>
         </details>
+
+        <h4>素材與授權</h4>
+        <ul>
+          <li><b>字型</b>：Noto Sans TC、Russo One、Exo 2 皆為 SIL Open Font License 1.1（Google Fonts）。遊戲內的 NullHunterHUD／NullHunterHan 斜體字型是把原字型斜切 12 度並改名的衍生版，沒有使用保留字型名稱，符合 OFL，並隨附原授權文件。</li>
+          <li><b>音樂與音效</b>：以 ElevenLabs Music v2／Sound Effects v2 生成，4 段配樂與 14 類音效，共 46 份 WAV。</li>
+          <li><b>美術</b>：以 ChatGPT 圖像生成（GPT Image）產生，經風格測試定案後由成員整理；素材包名稱中的 Flow 指遊戲的 11 個流程畫面。</li>
+        </ul>
       </section>
 
       <!-- 04 教學手冊 -->
