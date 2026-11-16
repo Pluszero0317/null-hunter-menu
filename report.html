@@ -187,11 +187,11 @@
           <li><b>Unreal Engine 5</b>：業界高階畫面規格，但藍圖與 C++ 對純文字的 AI 來說門檻較高。</li>
         </ul>
         <p class="q"><b>研究問題</b>　同一份規格、同一個 AI，放到三款不同的遊戲引擎，AI 能幫多少忙？哪裡最容易卡住？學生團隊該怎麼選引擎？</p>
-        <p>為了回答這個問題，我們在學生筆電上實際走過三遍，並把每一步量化記錄下來。五個目標與目前的成果如下：</p>
+        <p>為了回答這個問題，我們在學生自己的電腦上實際走過三遍，並把每一步量化記錄下來。五個目標與目前的成果如下：</p>
         <div class="tbl"><table>
           <thead><tr><th class="c">#</th><th>目標</th><th>做法</th><th>成果</th></tr></thead>
           <tbody>
-            <tr><td class="c">1</td><td>驗證 AI 工作鏈在學生設備上的可行性</td><td>在學生筆電裝好三款引擎與 Claude Code＋MCP，完成同規格原型並匯出 Windows 執行檔</td><td>三款原型皆可在 Windows 執行</td></tr>
+            <tr><td class="c">1</td><td>驗證 AI 工作鏈在學生設備上的可行性</td><td>在學生自己的電腦裝好三款引擎與 Claude Code＋MCP，完成同規格原型並匯出 Windows 執行檔</td><td>三款原型皆可在 Windows 執行</td></tr>
             <tr><td class="c">2</td><td>實測 AI 代碼除錯成本與模型相容痛點</td><td>每個模組記下首次通過、追問次數、人工修補次數與錯誤類型</td><td>首次通過：Unity 4/6、Unreal 4/6、Godot 3/6</td></tr>
             <tr><td class="c">3</td><td>深化多模態生成式 AI 開發能力</td><td>先做風格測試再量產共用素材，保存提示詞</td><td>共用素材包 v4.8：11 個場景、140 格特效、46 個音效</td></tr>
             <tr><td class="c">4</td><td>產出「學生 AI 遊戲開發實務指引」</td><td>歸納 AI 踩坑與報錯處理，編成入門教材與踩坑卡</td><td>入門教材 25 頁、踩坑卡 15 則、提示詞 18 則（引擎 15 則、美術與音效 3 則）</td></tr>
@@ -285,11 +285,12 @@
             <tr><th>人工修補次數</th><td>4 次</td><td>0 次</td><td>0 次</td></tr>
             <tr><th>追問次數</th><td>至少 1</td><td>5</td><td>1</td></tr>
             <tr><th>執行檔大小</th><td>130MB</td><td>195MB</td><td>476MB</td></tr>
-            <tr><th>頭目戰平均 FPS</th><td>未量測</td><td>165（VSync 上限）</td><td>未量測</td></tr>
-            <tr><th>專案檔案大小（原始檔／含快取）</th><td>未量測</td><td>71MB／4,104MB</td><td>未量測</td></tr>
-            <tr><th>硬體負擔（CPU／GPU／記憶體）</th><td>未量測</td><td>3.3%／8.6%／620MB</td><td>未量測</td></tr>
+            <tr><th>頭目戰平均 FPS</th><td>60.0（VSync 上限）</td><td>165（VSync 上限）</td><td>60.0（VSync 上限）；不鎖幀 702.5</td></tr>
+            <tr><th>專案檔案大小（原始檔／含快取）</th><td>54MB／82MB</td><td>71MB／4,104MB</td><td>未量測</td></tr>
+            <tr><th>硬體負擔（CPU／GPU／記憶體）</th><td>0.25%／3.0%／126MB</td><td>3.3%／8.6%／620MB</td><td>2.5%／29.5%／2,061MB</td></tr>
             <tr><th>M1 素材匯入耗時</th><td>7 分</td><td>6 分</td><td>35 分</td></tr>
             <tr><th>錯誤類型（次數）</th><td>找不到物件 1</td><td>邏輯 6、素材匯入 1、版本不符 1、找不到物件 1、語法 1</td><td>語法 3、版本不符 2、邏輯 2、外掛連線 1</td></tr>
+            <tr><th>測試設備</th><td>桌機：i7-14700K、RTX 4070 Ti、32GB；60Hz 螢幕</td><td>ASUS TUF Gaming F15 筆電：i7-13620H、RTX 4070 Laptop、32GB；165Hz 螢幕</td><td>桌機：i7-14700F、RTX 4060 Ti；60Hz 螢幕</td></tr>
           </tbody>
         </table></div>
         <details>
@@ -303,10 +304,10 @@
                 <tr><td>人工修補次數</td><td>人親手修改程式碼、場景或設定的次數（依 git commit 計算）；另記每個模組從開始到通過的總分鐘數</td></tr>
                 <tr><td>錯誤類型</td><td>6 類：語法、版本不符、找不到物件、素材匯入、邏輯、外掛連線</td></tr>
                 <tr><td>重現成功</td><td>第二人用同一份提示詞，是否做出相同結果</td></tr>
-                <tr><td>效能</td><td>執行檔大小、專案檔案大小、平均 FPS、CPU／GPU／記憶體用量（同一台筆電、同一段頭目戰）</td></tr>
+                <tr><td>效能</td><td>執行檔大小、專案檔案大小、平均 FPS、CPU／GPU／記憶體用量（各組主操電腦、同一段頭目戰）</td></tr>
               </tbody>
             </table></div>
-            <p class="small">執行檔大小為匯出後遊戲資料夾的總大小（Windows 檔案總管顯示的 MB），不含 .pdb 除錯檔。專案檔案大小的「原始檔」只算程式、場景與素材，「含快取」再加上引擎自動產生的快取，都不含 .git 與匯出檔。重現成功與 Claude 用量在實戰時沒有記錄。</p>
+            <p class="small">執行檔大小為匯出後遊戲資料夾的總大小（Windows 檔案總管顯示的 MB），不含 .pdb 除錯檔。專案檔案大小的「原始檔」只算程式、場景與素材，「含快取」再加上引擎自動產生的快取，都不含 .git 與匯出檔。重現成功與 Claude 用量在實戰時沒有記錄。Unreal 的效能以 Development 版 -game 模式量測（Shipping 版無法直接跳到頭目戰），記憶體會比正式打包版高。</p>
           </div>
         </details>
         <details>
@@ -315,10 +316,10 @@
             <div class="tbl"><table>
               <thead><tr><th>控制什麼</th><th>怎麼做</th></tr></thead>
               <tbody>
-                <tr><td>同樣的條件</td><td>三場用同一份規格、素材、提示詞範本、筆電與 AI 模型，實戰中不換</td></tr>
-                <tr><td>同樣的量法</td><td>效能一律量匯出後的執行檔、同一段頭目戰；專案大小分原始檔與含快取兩種</td></tr>
+                <tr><td>同樣的條件</td><td>三場用同一份規格、素材、提示詞範本與 AI 模型，實戰中不換</td></tr>
+                <tr><td>同樣的量法</td><td>效能量匯出後的執行檔（Unreal 改用 Development 版，見上方說明）、同一段頭目戰；專案大小分原始檔與含快取兩種</td></tr>
                 <tr><td>提示詞不是變因</td><td>三款引擎用同一份提示詞骨架，只換引擎參數（版本、語言、物件類型、座標）</td></tr>
-                <tr><td>已知限制</td><td>順序 Godot → Unity → Unreal，越後面越熟練</td></tr>
+                <tr><td>已知限制</td><td>順序 Godot → Unity → Unreal，越後面越熟練；效能在各組主操電腦量測，電腦與螢幕更新率不同（Unity 165Hz、Godot 與 Unreal 60Hz），FPS 只看是否達到上限，不比大小</td></tr>
               </tbody>
             </table></div>
           </div>

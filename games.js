@@ -21,7 +21,7 @@ window.NULL_HUNTER_GAMES = [
     videoLabel: "精華影片",
     screenshot: null,
     note: "",
-    stats: { modules: 6, firstPass: 3, exeSize: 130, fps: null }
+    stats: { modules: 6, firstPass: 3, exeSize: 130, fps: 60 }
   },
   {
     id: "unity",
@@ -55,7 +55,7 @@ window.NULL_HUNTER_GAMES = [
     videoLabel: "精華影片",
     screenshot: null,
     note: "Unreal 不支援匯出網頁版，請下載 Windows 版試玩",
-    stats: { modules: 6, firstPass: 4, exeSize: 476, fps: null }
+    stats: { modules: 6, firstPass: 4, exeSize: 476, fps: 60 }
   }
 ];
 
