@@ -1,6 +1,7 @@
 # 錄影檔通常很大，改放 GitHub Releases 或 YouTube
 videos/*.mp4
 !videos/NullHunter_Highlight.mp4
+!videos/NullHunter_Unreal_Highlight.mp4
 videos/*.webm
 Thumbs.db
 desktop.ini
