@@ -25,6 +25,8 @@
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; min-height: 100%; }
+  /* 手機：不讓瀏覽器自動放大文字（橫放時）或因內容超寬而縮小整頁 */
+  html { overflow-x: hidden; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   body {
     background: var(--deep);
     color: var(--cream);
@@ -99,6 +101,17 @@
   .btn[aria-disabled="true"] { border-color: #4A3E86; color: #7D74B5; background: transparent; cursor: not-allowed; }
   .btn:focus-visible { outline: 3px solid var(--cream); outline-offset: 2px; }
 
+  /* 手機（觸控、沒有滑鼠）：遊戲要鍵盤，改提示看影片；遊戲畫面盡量放大 */
+  .touch-note { display: none; text-align: center; margin: 18px auto 0; max-width: 520px; font-family: "NH Han Body", sans-serif; font-size: 14px; line-height: 1.6; color: var(--cream); border: 2px solid var(--cyan); background: var(--navy); padding: 10px 14px; }
+  @media (hover: none) and (pointer: coarse) {
+    .keys { display: none; }
+    .touch-note { display: block; }
+    .player .top { padding: 8px 10px; gap: 6px; }
+    .player .top .btn { font-size: 14px; padding: 7px 10px; }
+    .player .stage { padding: 4px; }
+  }
+  @media (max-width: 520px) { .player .title { visibility: hidden; } }
+  @media (orientation: landscape) and (max-height: 520px) { .player .hint { display: none; } .player .top { padding: 4px 10px; } }
   .keys { text-align: center; margin-top: 26px; font-family: "NH Han Body", sans-serif; font-size: 14px; color: var(--muted); }
   .key { display: inline-block; min-width: 28px; padding: 2px 7px; margin: 0 2px; border: 2px solid var(--muted); border-bottom-width: 4px; font-family: "NH HUD", sans-serif; color: var(--cream); }
   footer { text-align: center; margin-top: 18px; font-family: "NH Han Body", sans-serif; font-size: 12px; color: var(--muted); line-height: 1.7; }
@@ -106,7 +119,7 @@
   /* 音樂開關 */
   .topnav { position: fixed; top: 14px; right: 16px; z-index: 5; display: flex; gap: 8px; }
   .topnav .btn { --accent: var(--cyan); background: var(--navy); font-size: 15px; padding: 7px 12px; }
-  @media (max-width: 640px) { .topnav { top: auto; bottom: 14px; right: 12px; } }
+  @media (max-width: 640px) { .topnav { position: relative; top: 0; right: 0; justify-content: flex-end; padding: 10px 12px 0; } }
   .music { }
   .music[aria-pressed="false"] { --accent: var(--muted); color: var(--muted); }
 
@@ -116,7 +129,7 @@
   .player .top { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-bottom: 3px solid var(--line); }
   .player .title { font-family: "NH Title", sans-serif; font-size: 22px; flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .player .stage { flex: 1; display: grid; place-items: center; padding: 12px; min-height: 0; }
-  .player .frame { width: min(100%, calc((100vh - 90px) * 16 / 9)); aspect-ratio: 16 / 9; border: 3px solid var(--line); background: #000; }
+  .player .frame { width: min(100%, calc((100dvh - 90px) * 16 / 9)); aspect-ratio: 16 / 9; border: 3px solid var(--line); background: #000; }
   .player iframe, .player video { width: 100%; height: 100%; border: 0; display: block; background: #000; }
   /* 場景圖庫 */
   .gallery { position: relative; width: 100%; height: 100%; background: #000; }
@@ -152,6 +165,8 @@
       </div>
     </header>
 
+    <p class="touch-note">手機沒有鍵盤，遊戲無法操作；可以先看「精華影片」，或用電腦開啟這個網址試玩。</p>
+
     <section class="cards" id="cards" aria-label="選擇引擎版本"></section>
 
     <p class="keys">
@@ -184,6 +199,8 @@
   const art = window.NULL_HUNTER_ART || null;
   const total = () => cardsEl.children.length;
   const GAME_HINT = "點一下遊戲畫面再開始操作。WASD／方向鍵移動，J／Space 射擊，Enter 確認。";
+  const isTouch = matchMedia("(hover: none) and (pointer: coarse)").matches;
+  const TOUCH_HINT = "這款遊戲需要鍵盤操作，手機上只能看畫面；請用電腦遊玩。手機橫放畫面會更大。";
   let galleryIndex = -1;
 
   // 音樂：素材包 bgm_menu（循環）＋ ui_move／ui_confirm。瀏覽器要等第一次點擊或按鍵才能出聲。
@@ -258,8 +275,8 @@
         </div>
         ${g.note ? `<p class="note">${g.note}</p>` : ""}
         <div class="actions">
-          ${g.web !== null ? `<a class="btn primary" data-act="play" aria-disabled="true">▶ 網頁試玩</a>` : ""}
-          ${g.video ? `<a class="btn ${g.web === null ? "primary" : ""}" data-act="video" aria-disabled="true">▶ ${g.videoLabel || "實機錄影"}</a>` : ""}
+          ${g.web !== null ? `<a class="btn ${isTouch ? "" : "primary"}" data-act="play" aria-disabled="true">▶ 網頁試玩${isTouch ? "（需鍵盤）" : ""}</a>` : ""}
+          ${g.video ? `<a class="btn ${g.web === null || isTouch ? "primary" : ""}" data-act="video" aria-disabled="true">▶ ${g.videoLabel || "實機錄影"}</a>` : ""}
           ${g.download ? `<a class="btn" data-act="download" aria-disabled="true" href="${g.download}" download>⇩ Windows 版</a>` : ""}
         </div>`;
       card.addEventListener("click", (e) => {
@@ -359,7 +376,7 @@
       return;
     }
     galleryIndex = -1;
-    hint.textContent = what === "video" ? "Esc 或「返回選單」回到選單。" : GAME_HINT;
+    hint.textContent = what === "video" ? (isTouch ? "手機橫放畫面會更大；按「返回選單」回到選單。" : "Esc 或「返回選單」回到選單。") : (isTouch ? TOUCH_HINT : GAME_HINT);
     const g = games[i];
     if (what === "download") {
       if (g.downloadParts) { joinDownload(g, btn); return; }
