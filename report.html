@@ -276,8 +276,7 @@
       <section id="r-results" data-page="實戰成果" hidden>
         <h3><span class="no">03</span>實戰成果</h3>
 
-        <h4>三款引擎數據比較（11/15 預演）</h4>
-        <p>數據取自 11/15 三引擎預演各組主操電腦的 records.csv 與 git 紀錄。</p>
+        <h4>三款引擎數據比較</h4>
         <div class="tbl"><table>
           <thead><tr><th>指標</th><th class="godot">Godot</th><th class="unity">Unity</th><th class="unreal">Unreal</th></tr></thead>
           <tbody>
@@ -291,10 +290,8 @@
             <tr><th>硬體負擔（CPU／GPU／記憶體）</th><td>未量測</td><td>3.3%／8.6%／620MB</td><td>未量測</td></tr>
             <tr><th>M1 素材匯入耗時</th><td>7 分</td><td>6 分</td><td>35 分</td></tr>
             <tr><th>錯誤類型（次數）</th><td>找不到物件 1</td><td>邏輯 6、素材匯入 1、版本不符 1、找不到物件 1、語法 1</td><td>語法 3、版本不符 2、邏輯 2、外掛連線 1</td></tr>
-            <tr><th>測試設備</th><td>同一台筆電</td><td>ASUS TUF Gaming F15：i7-13620H、RTX 4070 Laptop、32GB</td><td>同一台筆電</td></tr>
           </tbody>
         </table></div>
-        <p><b>主要發現</b>　三組試玩後都要求敵人隨機出生、敵人逃走要扣血，也都遇到上方敵人打不到。AI 自測通過不等於好玩，三組都是試玩後才發現問題；Godot 在 Claude 額度用完後，由人補上血條介面、敵人動作與射擊手感。Unreal 的藍圖是圖形化節點，AI 無法直接用文字產生，實作改以 C++ 完成，C++ 編譯錯誤（C4458）是 Unreal 最常見的問題。</p>
         <details>
           <summary>指標怎麼算</summary>
           <div>
@@ -370,27 +367,6 @@
             <tr><td>M7 加分項</td><td>時間夠才做：前導轉場、遊戲內設定（Esc 暫停）、Cube 修復、完整音效；不影響 M1–M6 的比較數據</td><td>狀態切換、暫停與設定、音訊節流</td></tr>
           </tbody>
         </table></div>
-        <details>
-          <summary>遊戲規格（三款引擎共用，數值不可自行更改）</summary>
-          <div>
-            <p class="small">數值以像素（px）與秒計；座標原點在左上、y 向下為正。Unity 與 Unreal 的座標軸不同，由各自換算，數值不改。</p>
-            <div class="tbl"><table>
-              <thead><tr><th>項目</th><th>規格</th></tr></thead>
-              <tbody>
-                <tr><td>畫面</td><td>1280×720，鎖 60 FPS；背景三層向左捲動（40、80、120 px/s）</td></tr>
-                <tr><td>操作</td><td>WASD 或方向鍵移動（八方向，斜向正規化）；按住 J 或空白鍵連射；Enter 確認</td></tr>
-                <tr><td>玩家</td><td>出生 (160, 360)；速度 420 px/s；距邊緣 32 px 內不可出界；血量 3；受傷後無敵 1.5 秒</td></tr>
-                <tr><td>子彈</td><td>8 發/s、900 px/s、傷害 1；飛出畫面即刪除</td></tr>
-                <tr><td>直線蟲</td><td>HP 1；向左 200 px/s；100 分</td></tr>
-                <tr><td>射擊蟲</td><td>HP 3；向左 100 px/s；每 2 秒朝玩家射 1 發（300 px/s）；300 分</td></tr>
-                <tr><td>頭目</td><td>HP 60；第 93 秒進場停在 x = 1060，上下來回 80 px/s；每 1.2 秒扇形 5 發（間距 15°、320 px/s）；擊敗得 3000 分並通關</td></tr>
-                <tr><td>碰撞</td><td>一律圓形：玩家 6、直線蟲 22、射擊蟲 28、頭目 80、子彈 6–7</td></tr>
-                <tr><td>音訊</td><td>4 段背景音樂；14 類音效，每類 3 個變體，共 46 份 WAV</td></tr>
-                <tr><td>字型</td><td>Exo 2、Russo One、Noto Sans TC（三款引擎預設沒有中文，必須匯入；遊戲內使用改名的斜體衍生版）</td></tr>
-              </tbody>
-            </table></div>
-          </div>
-        </details>
 
         <h4>素材與授權</h4>
         <ul>
